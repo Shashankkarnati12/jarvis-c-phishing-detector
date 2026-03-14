@@ -1,0 +1,9 @@
+Timestamp,URL,Result,Phishing %,Safe %
+2026-02-15 21:47:41,https://www.microsoft.com,LEGITIMATE WEBSITE,0.00,100.00
+2026-02-15 21:48:01,http://appleid-verification-update.info,⚠ PHISHING WEBSITE,93.00,7.00
+2026-02-15 21:49:05,http://microsoftsupport-login-help.org,⚠ PHISHING WEBSITE,93.00,7.00
+
+Timestamp,URL,Result,Phishing %,Safe %
+2026-02-15 21:47:41,https://www.microsoft.com,LEGITIMATE WEBSITE,0.00,100.00
+2026-02-15 21:48:01,http://appleid-verification-update.info,⚠ PHISHING WEBSITE,93.00,7.00
+2026-02-15 21:49:05,http://microsoftsupport-login-help.org,⚠ PHISHING WEBSITE,93.00,7.00

@@ -1,0 +1,11 @@
+url,label
+http://secure-login.com/verify,phishing
+http://paypal-update.com/login,phishing
+http://examplebank.com,safe
+https://github.com,safe
+http://free-gift-card.com/win,phishing
+https://www.microsoft.com,safe
+http://bank-login-security.com/reset,phishing
+https://www.google.com,safe
+http://win-free-iphone.com,phishing
+https://openai.com,safe

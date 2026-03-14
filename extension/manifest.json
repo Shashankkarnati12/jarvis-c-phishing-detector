@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "JARVIS-C Phishing Detector",
+  "version": "1.0",
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "notifications",
+    "scripting"
+  ],
+
+  "host_permissions": [
+  "https://jarvisc-phishing-backend.onrender.com/*",
+  "<all_urls>"
+
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+ "content_scripts": [
+  {
+    "matches": ["<all_urls>"],
+    "js": ["content.js"]
+  }
+],
+
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
