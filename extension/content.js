@@ -14,7 +14,7 @@
       if (response.risk_score >= 50) {
         showPremiumRed(response);
       } else {
-        showPremiumGreen(response);
+        showPremiumPopup(response);
       }
 
     }
