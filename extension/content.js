@@ -55,8 +55,10 @@ function showPremiumRed(data) {
         background:rgba(255,255,255,0.1);
         border-radius:10px;
       ">
-        <p>Risk Score: ${data.risk_score}</p>
-        <p>AI Confidence: ${data.probability}%</p>
+        <p>⚠ Risk Score: <b>${data.risk_score}</b></p>
+<p>🤖 ML Probability: <b>${data.probability}%</b></p>
+<p>🔐 SSL Status: <b>${data.ssl}</b></p>
+<p>🌐 Domain Age: <b>${data.domain_age} days</b></p>
       </div>
 
       <button onclick="window.location.href='https://google.com'"
