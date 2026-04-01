@@ -4,7 +4,7 @@ document.getElementById("scanBtn").addEventListener("click", async () => {
 
     const url = tab.url;
 
-    const response = await fetch("https://jarvisc-phishing-backend.onrender.com/scan", {
+    const response = await fetch("https://jarvis-c-phishing-backend.onrender.com/scan", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

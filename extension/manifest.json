@@ -11,7 +11,7 @@
   ],
 
   "host_permissions": [
-  "https://jarvisc-phishing-backend.onrender.com/*",
+  "https://jarvis-c-phishing-backend.onrender.com/*",
   "<all_urls>"
 
   ],
