@@ -7,3 +7,4 @@ joblib
 requests
 tldextract
 python-whois
+gunicorn
