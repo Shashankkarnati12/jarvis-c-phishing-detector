@@ -2,7 +2,7 @@ const currentUrl = window.location.href;
 
 function autoScan() {
 
-    fetch("https://jarvis-c-phishing-backend.onrender.com/scan", {
+    fetch("https://jarvis-c-phishing-detector.onrender.com/scan", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

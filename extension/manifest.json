@@ -11,21 +11,19 @@
   ],
 
   "host_permissions": [
-  "https://jarvis-c-phishing-backend.onrender.com/*",
-  "<all_urls>"
-
+    "https://jarvis-c-phishing-detector.onrender.com/*"
   ],
 
   "background": {
     "service_worker": "background.js"
   },
-  
- "content_scripts": [
-  {
-    "matches": ["<all_urls>"],
-    "js": ["content.js"]
-  }
-],
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
 
   "action": {
     "default_popup": "popup.html"
