@@ -1,31 +1,26 @@
-chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-
-    if (changeInfo.status === "complete" && tab.url) {
-
-        fetch("https://jarvisc-phishing-backend.onrender.com/scan", {
+(async () => {
+    try {
+        const response = await fetch("https://jarvis-c-phishing-detector.onrender.com/scan", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ url: tab.url })
-        })
-        .then(response => response.json())
-        .then(data => {
+            body: JSON.stringify({
+                url: window.location.href
+            })
+        });
 
-            console.log("Auto Scan Result:", data);
+        const data = await response.json();
 
-            if (data.final_result === "PHISHING WEBSITE") {
+        console.log("API RESPONSE:", data);
 
-                chrome.tabs.sendMessage(tabId, {
-                    action: "phishingWarning",
-                    result: data
-                });
+        // ✅ FIXED KEYS
+        document.querySelector("#result").innerText = data.final_result;
+        document.querySelector("#risk").innerText = data.risk_score;
+        document.querySelector("#ssl").innerText = data.ssl;
+        document.querySelector("#domain").innerText = data.domain_age;
 
-            }
-
-        })
-        .catch(err => console.log("Auto Scan Error:", err));
-
+    } catch (error) {
+        console.error("ERROR:", error);
     }
-
-});
+})();
