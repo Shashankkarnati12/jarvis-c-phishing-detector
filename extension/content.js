@@ -8,7 +8,7 @@
       url: currentURL
     },
     (response) => {
-
+       console.log("API RESPONSE:", response);
       if (!response || response.error) return;
 
       if (response.risk_score >= 50) {
