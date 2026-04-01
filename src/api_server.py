@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app)
 
 # ✅ Load model
-model = joblib.load("src/models/phishing_model.pkl")
+model = joblib.load("models/phishing_model.pkl")
 
 
 # ✅ ROOT ROUTE (for testing)
