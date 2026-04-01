@@ -79,79 +79,56 @@ function showPremiumRed(data) {
 }
 
   // 🟢 PREMIUM GREEN POPUP
-  function showGreenPopup(data) {
+ function showGreenPopup(data) {
 
-  // 🔊 Voice
-  const msg = new SpeechSynthesisUtterance(
-    "This website is safe."
-  );
-  speechSynthesis.speak(msg);
-
-  // 🟢 Create popup
   const popup = document.createElement("div");
 
+  popup.style.position = "fixed";
+  popup.style.bottom = "20px";
+  popup.style.right = "20px";
+  popup.style.width = "300px";
+  popup.style.background = "linear-gradient(135deg, #22c55e, #16a34a)";
+  popup.style.color = "white";
+  popup.style.padding = "18px";
+  popup.style.borderRadius = "12px";
+  popup.style.zIndex = "999999";
+  popup.style.boxShadow = "0 8px 25px rgba(0,0,0,0.3)";
+  popup.style.fontFamily = "Segoe UI";
+
   popup.innerHTML = `
+    <h3>✅ Safe Website</h3>
+    <p style="opacity:0.9;">JARVIS-C Security Shield</p>
+
     <div style="
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 300px;
-      background: linear-gradient(135deg, #16a34a, #22c55e);
-      color: white;
-      border-radius: 16px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      font-family: Segoe UI, sans-serif;
-      z-index: 999999;
-      animation: slideIn 0.4s ease;
+      margin-top:10px;
+      background: rgba(255,255,255,0.15);
+      padding:10px;
+      border-radius:8px;
     ">
-
-      <h3 style="margin:0;">✅ Safe Website</h3>
-      <p style="margin:5px 0 10px 0; opacity:0.9;">
-        JARVIS-C Security Shield
-      </p>
-
-      <div style="
-        background: rgba(255,255,255,0.1);
-        padding:10px;
-        border-radius:10px;
-        font-size:14px;
-      ">
-        <p>⚠ Risk: ${data.risk_score}</p>
-        <p>🤖 Confidence: ${data.probability}%</p>
-        <p>🔐 SSL: ${data.ssl}</p>
-        <p>🌐 Age: ${data.domain_age} days</p>
-      </div>
-
-      <button onclick="this.parentElement.remove()" style="
-        margin-top:10px;
-        width:100%;
-        padding:8px;
-        border:none;
-        border-radius:8px;
-        background:black;
-        color:white;
-        cursor:pointer;
-      ">
-        Close
-      </button>
-
+      <p>⚠ Risk: ${data.risk_score}</p>
+      <p>📊 Confidence: ${data.probability}%</p>
+      <p>🔒 SSL: ${data.ssl}</p>
+      <p>🌐 Age: ${data.domain_age} days</p>
     </div>
 
-    <style>
-      @keyframes slideIn {
-        from { transform: translateY(50px); opacity:0; }
-        to { transform: translateY(0); opacity:1; }
-      }
-    </style>
+    <button id="closePopup" style="
+      margin-top:12px;
+      width:100%;
+      padding:8px;
+      background:black;
+      color:white;
+      border:none;
+      border-radius:6px;
+      cursor:pointer;
+    ">Close</button>
   `;
 
   document.body.appendChild(popup);
 
-  // ⏳ Auto remove after 5 sec
-  setTimeout(() => {
-    popup.remove();
-  }, 5000);
+  document.getElementById("closePopup").onclick = () => popup.remove();
+
+  // Auto close after 5 sec
+  setTimeout(() => popup.remove(), 5000);
 }
 
 })();
