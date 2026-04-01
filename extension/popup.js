@@ -1,31 +1,34 @@
-document.getElementById("scanBtn").addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const [tab] = await chrome.tabs.query({active: true, currentWindow: true});
+  document.getElementById("scanBtn").addEventListener("click", () => {
 
-    const url = tab.url;
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
-    const response = await fetch("https://jarvis-c-phishing-detector.onrender.com/scan", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
+      const url = tabs[0].url;
+
+      chrome.runtime.sendMessage(
+        {
+          type: "SCAN_URL",
+          url: url
         },
-        body: JSON.stringify({ url: url })
+        (data) => {
+
+          if (!data || data.error) {
+            document.getElementById("result").innerText = "Error fetching data";
+            return;
+          }
+
+          document.getElementById("result").innerText =
+`Result: ${data.final_result}
+Risk Score: ${data.risk_score}
+SSL: ${data.ssl}
+Domain Age: ${data.domain_age}`;
+
+        }
+      );
+
     });
 
-    const data = await response.json();
-
-    let resultText = `
-Website Status: ${data.final_result}
-
-Risk Score: ${data.risk_score}
-ML Probability: ${data.probability}%
-
-Security Checks:
-✔ SSL Certificate: ${data.ssl_status}
-⚠ VirusTotal Malicious: ${data.vt_malicious}
-⚠ Domain Age: ${data.domain_age_days} days
-`;
-
-    document.getElementById("result").innerText = resultText;
+  });
 
 });

@@ -1,26 +1,22 @@
-(async () => {
-    try {
-        const response = await fetch("https://jarvis-c-phishing-detector.onrender.com/scan", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                url: window.location.href
-            })
-        });
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === "SCAN_URL") {
 
-        const data = await response.json();
+    fetch("https://jarvis-c-phishing-detector.onrender.com/scan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ url: request.url })
+    })
+    .then(res => res.json())
+    .then(data => {
+      sendResponse(data); // ✅ send data back
+    })
+    .catch(err => {
+      console.error("ERROR:", err);
+      sendResponse({ error: true });
+    });
 
-        console.log("API RESPONSE:", data);
-
-        // ✅ FIXED KEYS
-        document.querySelector("#result").innerText = data.final_result;
-        document.querySelector("#risk").innerText = data.risk_score;
-        document.querySelector("#ssl").innerText = data.ssl;
-        document.querySelector("#domain").innerText = data.domain_age;
-
-    } catch (error) {
-        console.error("ERROR:", error);
-    }
-})();
+    return true; // required for async
+  }
+});
