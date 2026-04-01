@@ -21,69 +21,60 @@
   );
 
   // 🔴 PREMIUM RED PAGE
-  function showPremiumRed(data) {
-    document.body.innerHTML = `
+function showPremiumRed(data) {
+
+  // 🔊 VOICE ALERT (ADD HERE)
+  const msg = new SpeechSynthesisUtterance(
+    "Warning! This website is dangerous. Please go back immediately."
+  );
+  speechSynthesis.speak(msg);
+
+  // 🔴 RED PAGE UI
+  document.body.innerHTML = `
+    <div style="
+      height:100vh;
+      width:100%;
+      background: linear-gradient(135deg, #b71c1c, #d32f2f);
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      font-family:Segoe UI, sans-serif;
+      text-align:center;
+    ">
+
+      <h1 style="font-size:40px;">⚠ Deceptive Site Ahead</h1>
+      <h2>JARVIS-C Security Shield</h2>
+
+      <p>This website is flagged as dangerous.</p>
+
       <div style="
-        height:100vh;
-        width:100%;
-        background: linear-gradient(135deg, #b71c1c, #d32f2f);
-        color:white;
-        display:flex;
-        flex-direction:column;
-        justify-content:center;
-        align-items:center;
-        font-family:Segoe UI, sans-serif;
-        text-align:center;
-        animation: fadeIn 0.5s ease-in;
+        margin-top:20px;
+        padding:20px;
+        background:rgba(255,255,255,0.1);
+        border-radius:10px;
       ">
+        <p>Risk Score: ${data.risk_score}</p>
+        <p>AI Confidence: ${data.probability}%</p>
+      </div>
 
-        <h1 style="font-size:40px;">⚠ Deceptive Site Ahead</h1>
-
-        <h2 style="opacity:0.8;">JARVIS-C Security Shield</h2>
-
-        <p style="max-width:600px; margin-top:10px;">
-          This website is flagged as dangerous. Attackers may try to steal your data.
-        </p>
-
-        <div style="
-          margin-top:25px;
-          background: rgba(255,255,255,0.1);
-          padding:20px;
-          border-radius:12px;
-          backdrop-filter: blur(10px);
-        ">
-          <p>🔥 Risk Score: <b>${data.risk_score}</b></p>
-          <p>🧠 AI Confidence: <b>${data.probability}%</b></p>
-          <p>🔒 SSL: <b>${data.ssl}</b></p>
-          <p>🌐 Domain Age: <b>${data.domain_age} days</b></p>
-        </div>
-
-        <button onclick="window.history.back()" style="
-          margin-top:30px;
-          padding:12px 25px;
-          font-size:16px;
-          border:none;
-          border-radius:8px;
+      <button onclick="window.location.href='https://google.com'"
+        style="
+          margin-top:20px;
+          padding:10px 20px;
           background:black;
           color:white;
+          border:none;
+          border-radius:5px;
           cursor:pointer;
-          transition:0.3s;
-        "
-        onmouseover="this.style.background='#333'"
-        onmouseout="this.style.background='black'">
-          Go Back to Safety
-        </button>
+        ">
+        Go Back to Safety
+      </button>
 
-        <style>
-          @keyframes fadeIn {
-            from { opacity:0; transform: scale(0.95); }
-            to { opacity:1; transform: scale(1); }
-          }
-        </style>
-
-      </div>
-    `;
-  }
+    </div>
+  `;
+}
 
   // 🟢 PREMIUM GREEN POPUP
   function showPremiumGreen(data) {
