@@ -10,18 +10,22 @@ import joblib
 import pandas as pd
 import os
 
+# ✅ App setup
 app = Flask(__name__)
 CORS(app)
 
+# ✅ Load model
 model = joblib.load("models/phishing_model.pkl")
 
-# ✅ ROOT ROUTE
+
+# ✅ ROOT ROUTE (for testing)
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
         "status": "running",
         "message": "JARVIS-C Backend Live"
     })
+
 
 # ✅ MAIN SCAN ROUTE
 @app.route("/scan", methods=["POST"])
@@ -30,20 +34,24 @@ def scan():
         data = request.json
         url = data.get("url")
 
+        # 🔒 Validate URL
         if not url or not url.startswith(("http://", "https://")):
             return jsonify({"error": "Invalid URL"})
 
+        # 🔍 Extract features
         features = extract_features(url)
         feature_df = pd.DataFrame([features])
 
+        # 🤖 ML Prediction
         prediction = model.predict(feature_df)[0]
         probability = model.predict_proba(feature_df)[0][1] * 100
 
+        # 🌐 Additional checks
         ssl_status = check_ssl_certificate(url)
         domain_age = check_domain_age(url)
         vt_result = check_virustotal(url)
 
-        # 🔥 Risk scoring
+        # ⚠️ Risk calculation
         risk_score = 0
 
         if prediction == 1:
@@ -61,15 +69,16 @@ def scan():
         if ssl_status == "Invalid SSL":
             risk_score += 10
 
+        # 🧠 Final decision
         final_result = "PHISHING WEBSITE" if risk_score >= 50 else "SAFE WEBSITE"
 
-        # ✅ FIXED RESPONSE KEYS
+        # ✅ IMPORTANT: Correct keys for extension
         return jsonify({
             "final_result": final_result,
             "risk_score": risk_score,
             "probability": round(probability, 2),
-            "ssl": ssl_status,              # ✅ FIX
-            "domain_age": domain_age,      # ✅ FIX
+            "ssl": ssl_status,              # ✅ correct key
+            "domain_age": domain_age,      # ✅ correct key
             "vt_malicious": vt_result["malicious"],
             "vt_suspicious": vt_result["suspicious"]
         })
@@ -77,7 +86,8 @@ def scan():
     except Exception as e:
         return jsonify({"error": str(e)})
 
-# ✅ RUN SERVER
+
+# ✅ RUN APP (RENDER FIX)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=False)
