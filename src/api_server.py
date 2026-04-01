@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from features import (
+from src.features import (
     extract_features,
     check_domain_age,
     check_ssl_certificate,
@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app)
 
 # ✅ Load model
-model = joblib.load("models/phishing_model.pkl")
+model = joblib.load("src/models/phishing_model.pkl")
 
 
 # ✅ ROOT ROUTE (for testing)
