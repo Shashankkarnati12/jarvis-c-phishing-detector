@@ -14,25 +14,8 @@ app = Flask(__name__)
 CORS(app)
 
 model = joblib.load("models/phishing_model.pkl")
-@app.route('/')
-def home():
-    return {"status": "JARVIS backend running"}
 
-@app.route('/scan', methods=['POST'])
-def scan():
-    return {"final_result": "SAFE WEBSITE", "risk_score": 10}
-
-@app.route('/scan', methods=['POST'])
-def scan():
-    return {
-        "final_result": "SAFE WEBSITE",
-        "risk_score": 12,
-        "ssl": "Valid",
-        "domain_age": 120
-    }
-
-
-# ✅ ROOT ROUTE (IMPORTANT FIX)
+# ✅ ROOT ROUTE
 @app.route("/", methods=["GET"])
 def home():
     return jsonify({
@@ -40,7 +23,7 @@ def home():
         "message": "JARVIS-C Backend Live"
     })
 
-
+# ✅ MAIN SCAN ROUTE
 @app.route("/scan", methods=["POST"])
 def scan():
     try:
@@ -60,7 +43,7 @@ def scan():
         domain_age = check_domain_age(url)
         vt_result = check_virustotal(url)
 
-        # Risk scoring
+        # 🔥 Risk scoring
         risk_score = 0
 
         if prediction == 1:
@@ -80,12 +63,13 @@ def scan():
 
         final_result = "PHISHING WEBSITE" if risk_score >= 50 else "SAFE WEBSITE"
 
+        # ✅ FIXED RESPONSE KEYS
         return jsonify({
             "final_result": final_result,
             "risk_score": risk_score,
             "probability": round(probability, 2),
-            "ssl_status": ssl_status,
-            "domain_age_days": domain_age,
+            "ssl": ssl_status,              # ✅ FIX
+            "domain_age": domain_age,      # ✅ FIX
             "vt_malicious": vt_result["malicious"],
             "vt_suspicious": vt_result["suspicious"]
         })
@@ -93,7 +77,7 @@ def scan():
     except Exception as e:
         return jsonify({"error": str(e)})
 
-
+# ✅ RUN SERVER
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
