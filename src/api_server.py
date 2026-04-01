@@ -8,6 +8,7 @@ from features import (
 )
 import joblib
 import pandas as pd
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -15,16 +16,23 @@ CORS(app)
 model = joblib.load("models/phishing_model.pkl")
 
 
+# ✅ ROOT ROUTE (IMPORTANT FIX)
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({
+        "status": "running",
+        "message": "JARVIS-C Backend Live"
+    })
+
+
 @app.route("/scan", methods=["POST"])
 def scan():
     try:
         data = request.json
         url = data.get("url")
-       
-        if not url or not url.startswith(("http://", "https://")):
-              return jsonify({"error": "Invalid URL"})
-        
 
+        if not url or not url.startswith(("http://", "https://")):
+            return jsonify({"error": "Invalid URL"})
 
         features = extract_features(url)
         feature_df = pd.DataFrame([features])
@@ -36,38 +44,27 @@ def scan():
         domain_age = check_domain_age(url)
         vt_result = check_virustotal(url)
 
-        # ===============================
-        # HYBRID RISK SCORING SYSTEM
-        # ===============================
-
+        # Risk scoring
         risk_score = 0
 
-        # ML contribution
         if prediction == 1:
             risk_score += 50
 
-        # VirusTotal contribution
         if vt_result["malicious"] > 0:
             risk_score += 40
 
         if vt_result["suspicious"] > 0:
             risk_score += 20
 
-        # Domain age contribution
         if domain_age < 30:
             risk_score += 20
 
-        # SSL contribution
         if ssl_status == "Invalid SSL":
             risk_score += 10
 
-        # Final decision
-        if risk_score >= 50:
-            final_result = "PHISHING WEBSITE"
-        else:
-            final_result = "SAFE WEBSITE"
+        final_result = "PHISHING WEBSITE" if risk_score >= 50 else "SAFE WEBSITE"
 
-        result = {
+        return jsonify({
             "final_result": final_result,
             "risk_score": risk_score,
             "probability": round(probability, 2),
@@ -75,14 +72,11 @@ def scan():
             "domain_age_days": domain_age,
             "vt_malicious": vt_result["malicious"],
             "vt_suspicious": vt_result["suspicious"]
-        }
-
-        return jsonify(result)
+        })
 
     except Exception as e:
         return jsonify({"error": str(e)})
 
-import os
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
