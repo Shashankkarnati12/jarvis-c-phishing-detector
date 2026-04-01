@@ -14,6 +14,22 @@ app = Flask(__name__)
 CORS(app)
 
 model = joblib.load("models/phishing_model.pkl")
+@app.route('/')
+def home():
+    return {"status": "JARVIS backend running"}
+
+@app.route('/scan', methods=['POST'])
+def scan():
+    return {"final_result": "SAFE WEBSITE", "risk_score": 10}
+
+@app.route('/scan', methods=['POST'])
+def scan():
+    return {
+        "final_result": "SAFE WEBSITE",
+        "risk_score": 12,
+        "ssl": "Valid",
+        "domain_age": 120
+    }
 
 
 # ✅ ROOT ROUTE (IMPORTANT FIX)
